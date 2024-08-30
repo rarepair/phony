@@ -64,7 +64,7 @@ if (__name__ == "__main__"):
     logger.info("Program started at %s" % (start_time.now().strftime("%H:%M:%S on %d %B %Y")))
 
     phone_manager = Phone()
-    handset_button = Button(pin=14, pull_up=True, bounce_time=0.5)
+    handset_button = Button(pin=14, pull_up=True, bounce_time=0.2)
     handset_button.when_activated = lambda: handset_up(button=handset_button, phone_manager=phone_manager, logger=logger, out_dir=args.output)
     handset_button.when_deactivated = lambda: handset_down(button=handset_button, phone_manager=phone_manager)
 

@@ -12,7 +12,7 @@ class Phone():
         self._tjoin_timeout = 5
         self._play_thread = None
         self._rcrd_thread = None
-        self._play_cmd_pfx = "aplay "
+        self._play_cmd_pfx = "aplay --device=plughw:1,0 --buffer-time=10000 --period-time=100 "
         self._rcrd_cmd_pfx = "arecord --device=plughw:1,0 --format=S24_LE --rate=48000 "
         self._stop = Event()
 
