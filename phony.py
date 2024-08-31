@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 import logging, util, os, re, signal, code
 from argparse import ArgumentParser, RawTextHelpFormatter
 from time import sleep
@@ -10,11 +10,13 @@ from gpiozero import Button
 this_script_path     = Path(__file__).resolve()
 this_script_dir      = this_script_path.parent.resolve()
 this_script_filename = this_script_path.name
-output_path_root     = Path(this_script_dir,'out').resolve()
+output_path_root     = Path(this_script_dir, 'out').resolve()
+greeting_msg_path    = Path(this_script_dir, 'greeting.wav').resolve()
 
 def sigint_handler(signum, frame):
     logger = logging.getLogger(name=this_script_filename)
     logger.critical("Received SIGINT. Exiting")
+    logger.info("Program ended at %s" % (start_time.now().strftime("%H:%M:%S on %d %B %Y")))
     exit()
 signal.signal(signal.SIGINT, sigint_handler)
 
@@ -49,7 +51,7 @@ def get_new_filename(logger, out_dir):
 
 def handset_up(button, phone_manager, logger, out_dir):
     new_file_name = get_new_filename(logger=logger, out_dir=out_dir)
-    phone_manager.play(audio_file="/home/wtk/Desktop/test.wav")
+    phone_manager.play(audio_file=greeting_msg_path)
     phone_manager.record(audio_file=new_file_name)
 
 def handset_down(button, phone_manager):
@@ -57,7 +59,7 @@ def handset_down(button, phone_manager):
 
 if (__name__ == "__main__"):
     args = parse_args()
-    util.init_logging(console_level=(logging.DEBUG if args.debug else logging.INFO))
+    util.init_logging(console_level=(logging.DEBUG if args.debug else logging.INFO), logfile=True, logfile_dir=output_path_root)
     logger = logging.getLogger(name=this_script_filename)
 
     start_time = datetime.now()

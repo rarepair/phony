@@ -91,7 +91,7 @@ class Phone():
 
     def play(self, audio_file):
         if not self._play_thread or self._play_thread.is_alive() == False:
-            cmd = self._play_cmd_pfx + audio_file
+            cmd = self._play_cmd_pfx + str(audio_file)
             self._play_thread = Thread(target=self._cmd_runner, args=(cmd, self._stop, ), name="Player", daemon=True)
             self._play_thread.start()
         else:
