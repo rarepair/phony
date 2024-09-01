@@ -17,14 +17,8 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-# Reload ASLA configuration state. Added a sleep of 10s to ensure audio driver has time to load.
+# Reload ASLA configuration state.
 # Added '|| true' to end to guarantee a return code of 0; otherwise rc.local stops executing.
-sleep 10
 sudo alsactl restore --no-ucm -f "/home/wtk/phony/os_cfg/MonoSpeakerOutput_Mic2Input.state" || true
-
-# Launch phony at boot and run in background
-if test -f "/home/wtk/phony/phony.py"; then
-	python /home/wtk/phony/phony.py &
-fi
 
 exit 0
