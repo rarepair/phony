@@ -57,6 +57,11 @@ def handset_up(button, phone_manager, logger, out_dir):
 def handset_down(button, phone_manager):
     phone_manager.stop()
 
+def play_last_recording(button, phone_manager):
+    phone_manager.stop()
+    second_last_recording = phone_manager.getSecondLastRecording()
+    phone_manager.play(audio_file=second_last_recording)
+
 if (__name__ == "__main__"):
     args = parse_args()
     util.init_logging(console_level=(logging.DEBUG if args.debug else logging.INFO), logfile=True, logfile_dir=output_path_root)
@@ -69,6 +74,8 @@ if (__name__ == "__main__"):
     handset_button = Button(pin=14, pull_up=True, bounce_time=0.2)
     handset_button.when_activated = lambda: handset_up(button=handset_button, phone_manager=phone_manager, logger=logger, out_dir=args.output)
     handset_button.when_deactivated = lambda: handset_down(button=handset_button, phone_manager=phone_manager)
+    secret_button = Button(pin=12, pull_up=True, bounce_time=1)
+    secret_button.when_activated = lambda: play_last_recording(button=secret_button, phone_manager=phone_manager)
 
     # Main thread loop. Nothing to do except wait for a the OS to eventually kill us
     while True:

@@ -15,6 +15,7 @@ class Phone():
         self._play_cmd_pfx = "aplay --device=plughw:1,0 "
         self._rcrd_cmd_pfx = "arecord --device=plughw:1,0 --format=S24_LE --rate=48000 "
         self._stop = Event()
+        self._rcrd_list = []
 
     # Do some magic fnctl stuff to set the virtual terminal window size of a PTY in order to match the current terminal size.
     def _set_pty_terminal_size(self, fd):
@@ -100,6 +101,7 @@ class Phone():
     def record(self, audio_file):
         if not self._rcrd_thread or self._rcrd_thread.is_alive() == False:
             cmd = self._rcrd_cmd_pfx + audio_file
+            self._rcrd_list.append(audio_file)
             self._rcrd_thread = Thread(target=self._cmd_runner, args=(cmd, self._stop, ), name="Recorder", daemon=True)
             self._rcrd_thread.start()
         else:
@@ -115,3 +117,9 @@ class Phone():
         if self._rcrd_thread.is_alive():
             raise Exception("Record thread didn't terminate after %ds" % self._tjoin_timeout)
         self._stop.clear()
+
+    def getSecondLastRecording(self):
+        if len(self._rcrd_list) > 1:
+            return self._rcrd_list[len(self._rcrd_list) - 2]
+        else:
+            return None
