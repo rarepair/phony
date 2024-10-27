@@ -23,6 +23,8 @@ class Phone():
         size = struct.pack("HHHH", rows, columns, 0, 0)
         fcntl.ioctl(fd, termios.TIOCSWINSZ, size)
 
+    # This function is intended to run in a separate thread. It run a subprocess given by the passed in command. The stdout and stderr streams are
+    # captured as they are emitted and logged to the console. The passed in stop event can be used to terminate the command before it completes.
     def _cmd_runner(self, cmd, stop):
         thread_name = current_thread().name
         logger = logging.getLogger(thread_name)
@@ -90,6 +92,8 @@ class Phone():
         logger.debug("%s thread finished" % thread_name)
         return ret_code
 
+    # Play an audio file out of the handset speaker. Only one instance of this function can run at a time to avoid multiple sounds from attempting
+    # to be played simultaneously.
     def play(self, audio_file):
         if not self._play_thread or self._play_thread.is_alive() == False:
             cmd = self._play_cmd_pfx + str(audio_file)
@@ -98,6 +102,8 @@ class Phone():
         else:
             self._logger.warning("Attempted to call play() while play is in progress")
 
+    # Record an audio file from the handset microphone. Only one instance of this function can run at a time to avoid attempting to make multiple
+    # recordings simultaneously.
     def record(self, audio_file):
         if not self._rcrd_thread or self._rcrd_thread.is_alive() == False:
             cmd = self._rcrd_cmd_pfx + audio_file
@@ -107,6 +113,7 @@ class Phone():
         else:
             self._logger.warning("Attempted to call record() while recording is in progress")
 
+    # Halt any ongoing playback or recording. This is used to halt the play and record threads when the handset is place down onto the receiver.
     def stop(self):
         self._logger.info("Stopping play and record threads")
         self._stop.set()
@@ -118,6 +125,8 @@ class Phone():
             raise Exception("Record thread didn't terminate after %ds" % self._tjoin_timeout)
         self._stop.clear()
 
+    # Helper function to get the path of the second-last successful recording. This is used to play the previously recorded message when the
+    # special key chord is pressed.
     def getSecondLastRecording(self):
         if len(self._rcrd_list) > 1:
             return self._rcrd_list[len(self._rcrd_list) - 2]
