@@ -13,7 +13,7 @@ class Phone():
         self._play_thread = None
         self._rcrd_thread = None
         self._play_cmd_pfx = "aplay --device=plughw:1,0 "
-        self._rcrd_cmd_pfx = "arecord --device=plughw:1,0 --format=S24_LE --rate=48000 "
+        self._rcrd_cmd_pfx = "arecord --device=plughw:1,0 --format=S16_LE --rate=44100 "
         self._stop = Event()
         self._rcrd_list = []
 
