@@ -49,8 +49,7 @@ A simple phone logbook based on a Raspberry Pi. When the handset is picked up, a
 ![](/assets/8_Pi_and_Codec_Attached.jpeg)
     - At this point, you're ready to start on the software. I recommend leaving the Pi dangling from the wires for now in case you need to debug an issue later on.
 7. Prepare the software...
-    - Follow [these](https://www.raspberrypi.com/documentation/com
-    puters/getting-started.html) instructions to set up the Pi with the OS. Make sure to set up the WiFi access and enable the VNC server so you can remotely access it as soon as it boots, or otherwise, you'll need to plug in a display + keyboard + mouse. You can optionally install Raspberry Pi Connect if you want to be able to access the Pi over the internet. I used the Imager tool on the same page to prepare the microSD card.
+    - Follow [these](https://www.raspberrypi.com/documentation/computers/getting-started.html) instructions to set up the Pi with the OS. Make sure to set up the WiFi access and enable the VNC server so you can remotely access it as soon as it boots, or otherwise, you'll need to plug in a display + keyboard + mouse. You can optionally install Raspberry Pi Connect if you want to be able to access the Pi over the internet. I used the Imager tool on the same page to prepare the microSD card.
     - Plug the microSD card in and supply power via the USB-C port. It should boot within 30s.
         - If you didn't install Raspberry Pi Connect, get the IP address of your Pi through your home router. Open a connection to your Pi using [TigerVNC](https://tigervnc.org/).
         - If you did install Connect, you also have the option of opening a VNC session to your machine through the [Connect portal](https://connect.raspberrypi.com/sign-in).
